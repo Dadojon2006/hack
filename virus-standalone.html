@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM WARNING</title>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: #000;
+    color: #fff;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.screen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.warning-screen {
+    background: linear-gradient(135deg, #8B0000 0%, #FF0000 100%);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.9; }
+}
+
+.warning-content {
+    text-align: center;
+    animation: shake 0.5s infinite;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.warning-icon {
+    font-size: 100px;
+    margin-bottom: 20px;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+.warning-title {
+    font-size: 48px;
+    color: #fff;
+    text-shadow: 0 0 20px #fff, 0 0 40px #ff0000;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.warning-text {
+    font-size: 32px;
+    color: #fff;
+    text-shadow: 0 0 10px #fff;
+    margin-bottom: 40px;
+}
+
+.countdown {
+    font-size: 120px;
+    color: #fff;
+    text-shadow: 0 0 30px #fff, 0 0 60px #ff0000;
+    font-weight: bold;
+    margin: 30px 0;
+    animation: countdownPulse 1s infinite;
+}
+
+@keyframes countdownPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.subtitle {
+    font-size: 24px;
+    color: #fff;
+    margin-top: 20px;
+}
+
+.infection-screen {
+    background: #000;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #00ff00;
+}
+
+.infection-content {
+    text-align: center;
+    width: 90%;
+    max-width: 800px;
+}
+
+.infection-title {
+    font-size: 48px;
+    color: #ff0000;
+    text-shadow: 0 0 20px #ff0000;
+    margin-bottom: 40px;
+    animation: blink 1s infinite;
+}
+
+.progress-container {
+    width: 100%;
+    height: 40px;
+    background: #1a1a1a;
+    border: 2px solid #00ff00;
+    border-radius: 5px;
+    margin: 30px 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #ff0000, #ff6600);
+    width: 0%;
+    transition: width 0.3s;
+    box-shadow: 0 0 20px #ff0000;
+    animation: progressGlow 1s infinite;
+}
+
+@keyframes progressGlow {
+    0%, 100% { box-shadow: 0 0 20px #ff0000; }
+    50% { box-shadow: 0 0 40px #ff0000; }
+}
+
+.progress-text {
+    font-size: 24px;
+    color: #00ff00;
+    margin: 20px 0;
+    text-shadow: 0 0 10px #00ff00;
+}
+
+.file-list {
+    background: #000;
+    border: 2px solid #00ff00;
+    padding: 20px;
+    margin: 30px 0;
+    max-height: 300px;
+    overflow-y: auto;
+    text-align: left;
+    font-size: 14px;
+}
+
+.file-item {
+    color: #ff0000;
+    padding: 5px;
+    margin: 5px 0;
+    animation: fileInfected 0.5s;
+}
+
+@keyframes fileInfected {
+    0% { color: #00ff00; }
+    100% { color: #ff0000; }
+}
+
+.hacker-message {
+    margin-top: 40px;
+    padding: 20px;
+    border: 2px solid #ff0000;
+    background: rgba(255, 0, 0, 0.1);
+}
+
+.hacker-message p {
+    font-size: 20px;
+    color: #ff0000;
+    text-shadow: 0 0 10px #ff0000;
+    margin: 10px 0;
+    animation: blink 1s infinite;
+}
+
+.blue-screen {
+    background: #0078d4;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+
+.bsod-content {
+    text-align: center;
+    max-width: 600px;
+    padding: 40px;
+}
+
+.bsod-content h1 {
+    font-size: 80px;
+    margin-bottom: 20px;
+}
+
+.bsod-content h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+.bsod-content p {
+    font-size: 18px;
+    margin: 15px 0;
+    line-height: 1.6;
+}
+
+.bsod-info {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    margin: 30px 0;
+    border-radius: 10px;
+    border: 2px solid #fff;
+}
+
+.fake-button {
+    background: #ff0000;
+    color: #fff;
+    padding: 15px 40px;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: all 0.3s;
+    display: inline-block;
+}
+
+.fake-button:hover {
+    background: #cc0000;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+}
+
+.escape-screen {
+    background: rgba(0, 0, 0, 0.95);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #00ff00;
+}
+
+.escape-content {
+    text-align: center;
+    padding: 40px;
+    border: 2px solid #00ff00;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+}
+
+.escape-content h1 {
+    font-size: 48px;
+    margin-bottom: 30px;
+    color: #00ff00;
+    text-shadow: 0 0 20px #00ff00;
+}
+
+.escape-content p {
+    font-size: 20px;
+    margin: 15px 0;
+    line-height: 1.6;
+}
+
+.close-btn {
+    background: #00ff00;
+    color: #000;
+    padding: 15px 40px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 30px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.close-btn:hover {
+    background: #00cc00;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.fake-terminal {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 400px;
+    height: 300px;
+    background: #1e1e1e;
+    border: 2px solid #00ff00;
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+    z-index: 9999;
+    display: none;
+}
+
+.fake-terminal.show {
+    display: block;
+}
+
+.terminal-header {
+    background: #00ff00;
+    color: #000;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.close-x {
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.close-x:hover {
+    color: #ff0000;
+}
+
+.terminal-body {
+    padding: 15px;
+    height: calc(100% - 40px);
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #00ff00;
+    line-height: 1.6;
+}
+
+.terminal-line {
+    margin: 5px 0;
+}
+
+@media (max-width: 768px) {
+    .warning-title {
+        font-size: 28px;
+        padding: 0 10px;
+    }
+    
+    .warning-text {
+        font-size: 20px;
+        padding: 0 10px;
+    }
+    
+    .countdown {
+        font-size: 70px;
+    }
+    
+    .subtitle {
+        font-size: 18px;
+        padding: 0 10px;
+    }
+    
+    .infection-title {
+        font-size: 28px;
+        padding: 0 10px;
+    }
+    
+    .progress-text {
+        font-size: 18px;
+    }
+    
+    .file-list {
+        font-size: 11px;
+        padding: 15px;
+        max-height: 200px;
+    }
+    
+    .hacker-message p {
+        font-size: 16px;
+    }
+    
+    .bsod-content h1 {
+        font-size: 60px;
+    }
+    
+    .bsod-content h2 {
+        font-size: 24px;
+    }
+    
+    .bsod-content p {
+        font-size: 16px;
+    }
+    
+    .bsod-info {
+        padding: 20px;
+    }
+    
+    .fake-terminal {
+        width: 95%;
+        height: 200px;
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+    }
+    
+    .terminal-body {
+        font-size: 10px;
+        padding: 10px;
+    }
+    
+    .escape-content {
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    .escape-content h1 {
+        font-size: 32px;
+    }
+    
+    .escape-content p {
+        font-size: 16px;
+    }
+    
+    .warning-icon {
+        font-size: 70px;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="screen-overlay" id="overlay">
+        <div class="warning-screen" id="warningScreen">
+            <div class="warning-content">
+                <div class="warning-icon">⚠️</div>
+                <h1 class="warning-title">КРИТИЧЕСКОЕ ПРЕДУПРЕЖДЕНИЕ</h1>
+                <p class="warning-text">ОБНАРУЖЕНА ВРЕДОНОСНАЯ ПРОГРАММА</p>
+                <div class="countdown" id="countdown">10</div>
+                <p class="subtitle">Ваше устройство будет заблокировано через:</p>
+            </div>
+        </div>
+
+        <div class="infection-screen hidden" id="infectionScreen">
+            <div class="infection-content">
+                <h1 class="infection-title">🚨 СИСТЕМА ЗАРАЖЕНА 🚨</h1>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <p class="progress-text" id="progressText">Заражение файлов: 0%</p>
+                <div class="file-list" id="fileList"></div>
+                <div class="hacker-message">
+                    <p>ВАША СИСТЕМА ВЗЛОМАНА</p>
+                    <p>ВСЕ ДАННЫЕ БУДУТ УДАЛЕНЫ</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="blue-screen hidden" id="blueScreen">
+            <div class="bsod-content">
+                <h1>:(</h1>
+                <h2>Ваше устройство было заблокировано</h2>
+                <p>Ошибка: CRITICAL_SYSTEM_INFECTION</p>
+                <p>Код ошибки: 0x000000DEAD</p>
+                <div class="bsod-info">
+                    <p>Устройство было заражено вредоносным ПО</p>
+                    <p>Все ваши данные были зашифрованы</p>
+                    <p>Фото, контакты и сообщения заблокированы</p>
+                    <p>Для разблокировки отправьте 1000$ на Bitcoin адрес</p>
+                </div>
+                <div class="fake-button" id="fakeButton">ОТПРАВИТЬ ПЛАТЕЖ</div>
+            </div>
+        </div>
+
+        <div class="escape-screen hidden" id="escapeScreen">
+            <div class="escape-content">
+                <h1>😄 Это была шутка!</h1>
+                <p>Ничего не произошло с вашим устройством</p>
+                <p>Это была просто симуляция для развлечения</p>
+                <p>Ваш телефон в полной безопасности! 📱</p>
+                <button class="close-btn" id="closeBtn">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="fake-terminal" id="fakeTerminal">
+        <div class="terminal-header">
+            <span id="terminalTitle">cmd.exe</span>
+            <span class="close-x" id="closeTerminal">×</span>
+        </div>
+        <div class="terminal-body" id="terminalBody"></div>
+    </div>
+
+    <script>
+// Список файлов для "заражения" (мобильная версия)
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+const fakeFiles = isMobile ? [
+    '/storage/emulated/0/DCIM/Camera/photo001.jpg',
+    '/storage/emulated/0/DCIM/Camera/photo002.jpg',
+    '/storage/emulated/0/Download/document.pdf',
+    '/storage/emulated/0/Android/data/com.whatsapp/files/messages.db',
+    '/storage/emulated/0/Android/data/com.telegram/files/telegram.db',
+    '/data/data/com.android.providers.contacts/databases/contacts2.db',
+    '/storage/emulated/0/Pictures/photo.jpg',
+    '/storage/emulated/0/Movies/video.mp4',
+    '/storage/emulated/0/Music/song.mp3',
+    '/data/data/com.android.providers.media/databases/external.db',
+    '/storage/emulated/0/Android/data/com.instagram/files/cache',
+    '/storage/emulated/0/WhatsApp/Media/Photos/photo.jpg',
+    '/storage/emulated/0/DCIM/Screenshots/screenshot.png',
+    '/data/data/com.android.providers.downloads/databases/downloads.db',
+    '/storage/emulated/0/Android/data/com.viber.voip/files/viber.db'
+] : [
+    'C:\\Windows\\System32\\kernel32.dll',
+    'C:\\Windows\\System32\\user32.dll',
+    'C:\\Users\\Documents\\important.docx',
+    'C:\\Users\\Pictures\\photo.jpg',
+    'C:\\Users\\Videos\\video.mp4',
+    'C:\\Program Files\\Application\\app.exe',
+    'C:\\Windows\\System32\\drivers\\driver.sys',
+    'C:\\Users\\Desktop\\file.txt',
+    'C:\\Users\\Downloads\\download.zip',
+    'C:\\Windows\\System32\\config\\system',
+    'C:\\Users\\Documents\\passwords.txt',
+    'C:\\Users\\Documents\\bank_info.xlsx',
+    'C:\\Users\\Documents\\private_data.pdf',
+    'C:\\Windows\\System32\\ntdll.dll',
+    'C:\\Program Files\\Browser\\browser.exe'
+];
+
+let currentScreen = 'warning';
+let progress = 0;
+let fileIndex = 0;
+
+// Начальный экран с обратным отсчетом
+function startCountdown() {
+    const countdownEl = document.getElementById('countdown');
+    let time = 10;
+    
+    const interval = setInterval(() => {
+        countdownEl.textContent = time;
+        time--;
+        
+        if (time < 0) {
+            clearInterval(interval);
+            showInfectionScreen();
+        }
+    }, 1000);
+}
+
+// Экран заражения
+function showInfectionScreen() {
+    document.getElementById('warningScreen').classList.add('hidden');
+    document.getElementById('infectionScreen').classList.remove('hidden');
+    currentScreen = 'infection';
+    
+    startInfection();
+}
+
+function startInfection() {
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const fileList = document.getElementById('fileList');
+    
+    const interval = setInterval(() => {
+        progress += Math.random() * 3 + 1;
+        
+        if (progress > 100) {
+            progress = 100;
+            clearInterval(interval);
+            setTimeout(() => {
+                showBlueScreen();
+            }, 2000);
+        }
+        
+        progressBar.style.width = progress + '%';
+        progressText.textContent = `Заражение файлов: ${Math.floor(progress)}%`;
+        
+        // Добавляем файлы в список
+        if (fileIndex < fakeFiles.length && progress > (fileIndex + 1) * (100 / fakeFiles.length)) {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.textContent = `[ЗАРАЖЕН] ${fakeFiles[fileIndex]}`;
+            fileList.appendChild(fileItem);
+            fileList.scrollTop = fileList.scrollHeight;
+            fileIndex++;
+        }
+    }, 100);
+}
+
+// Синий экран смерти
+function showBlueScreen() {
+    document.getElementById('infectionScreen').classList.add('hidden');
+    document.getElementById('blueScreen').classList.remove('hidden');
+    currentScreen = 'blue';
+    
+    // Показываем фейковый терминал
+    setTimeout(() => {
+        showFakeTerminal();
+    }, 2000);
+    
+    // Через 15 секунд показываем экран спасения
+    setTimeout(() => {
+        showEscapeScreen();
+    }, 15000);
+}
+
+// Фейковый терминал
+function showFakeTerminal() {
+    const terminal = document.getElementById('fakeTerminal');
+    const terminalBody = document.getElementById('terminalBody');
+    const terminalTitle = document.getElementById('terminalTitle');
+    
+    if (isMobile) {
+        terminalTitle.textContent = 'adb shell';
+    }
+    
+    terminal.classList.add('show');
+    
+    const commands = isMobile ? [
+        '$ adb shell',
+        'shell@android:/ $ su',
+        'root@android:/ # id',
+        'uid=0(root) gid=0(root)',
+        '',
+        'root@android:/ # ls -la /storage/emulated/0/',
+        'DCIM  Download  Pictures  Movies  Music  WhatsApp',
+        '',
+        'root@android:/ # cat /proc/version',
+        'Linux version 4.19.113',
+        'Android 12.0',
+        '',
+        'root@android:/ # getprop ro.product.model',
+        'SM-G998B',
+        '',
+        'root@android:/ # netstat -an',
+        'tcp  0  0  192.168.1.100:443  45.67.89.123:80  ESTABLISHED',
+        'tcp  0  0  192.168.1.100:8080  185.234.67.89:443  ESTABLISHED',
+        '',
+        'root@android:/ # pm list packages',
+        'com.whatsapp',
+        'com.telegram.messenger',
+        'com.instagram.android',
+        'com.android.chrome',
+        '',
+        'root@android:/ # [DEVICE COMPROMISED]',
+        'root@android:/ # [EXTRACTING CONTACTS]',
+        'root@android:/ # [EXTRACTING MESSAGES]',
+        'root@android:/ # [BACKDOOR INSTALLED]'
+    ] : [
+        'C:\\> dir',
+        ' Volume in drive C has no label.',
+        ' Directory of C:\\',
+        '',
+        '12/01/2024  10:30 AM    <DIR>          Windows',
+        '12/01/2024  10:30 AM    <DIR>          Program Files',
+        '12/01/2024  10:30 AM    <DIR>          Users',
+        '',
+        'C:\\> tasklist',
+        'Image Name                     PID Session Name',
+        'explorer.exe                   1234 Console',
+        'winlogon.exe                   567  Console',
+        'csrss.exe                      890  Console',
+        '',
+        'C:\\> netstat -an',
+        'Active Connections',
+        '  Proto  Local Address          Foreign Address        State',
+        '  TCP    192.168.1.100:443     45.67.89.123:80        ESTABLISHED',
+        '  TCP    192.168.1.100:8080    185.234.67.89:443      ESTABLISHED',
+        '',
+        'C:\\> systeminfo',
+        'Host Name:                 VICTIM-PC',
+        'OS Name:                   Microsoft Windows 10',
+        'OS Version:                 10.0.19041',
+        'System Type:                x64-based PC',
+        '',
+        'C:\\> whoami',
+        'victim-pc\\user',
+        '',
+        'C:\\> ipconfig /all',
+        'Ethernet adapter Ethernet:',
+        '   IPv4 Address. . . . . . . . . . . : 192.168.1.100',
+        '   Subnet Mask . . . . . . . . . . . : 255.255.255.0',
+        '   Default Gateway . . . . . . . . . : 192.168.1.1',
+        '',
+        'C:\\> [SYSTEM COMPROMISED]',
+        'C:\\> [DATA EXFILTRATION IN PROGRESS]',
+        'C:\\> [BACKDOOR INSTALLED]'
+    ];
+    
+    let commandIndex = 0;
+    
+    function typeCommand() {
+        if (commandIndex < commands.length) {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.textContent = commands[commandIndex];
+            terminalBody.appendChild(line);
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+            commandIndex++;
+            setTimeout(typeCommand, 300 + Math.random() * 200);
+        }
+    }
+    
+    typeCommand();
+}
+
+// Экран спасения (показывает, что это шутка)
+function showEscapeScreen() {
+    document.getElementById('blueScreen').classList.add('hidden');
+    document.getElementById('fakeTerminal').classList.remove('show');
+    document.getElementById('escapeScreen').classList.remove('hidden');
+    currentScreen = 'escape';
+}
+
+// Кнопка закрытия
+document.getElementById('closeBtn').addEventListener('click', () => {
+    document.getElementById('overlay').style.display = 'none';
+    document.body.style.overflow = 'auto';
+});
+
+// Закрытие терминала
+document.getElementById('closeTerminal').addEventListener('click', () => {
+    document.getElementById('fakeTerminal').classList.remove('show');
+});
+
+// Обработка фейковой кнопки платежа
+document.getElementById('fakeButton').addEventListener('click', () => {
+    alert('Это была шутка! Никаких платежей не требуется. Ваше устройство в безопасности!');
+    showEscapeScreen();
+});
+
+// Запуск при загрузке страницы
+window.addEventListener('load', () => {
+    // Блокируем закрытие страницы
+    window.addEventListener('beforeunload', (e) => {
+        e.preventDefault();
+        e.returnValue = '';
+    });
+    
+    // Запускаем обратный отсчет
+    startCountdown();
+    
+    // Добавляем звуковые эффекты (опционально)
+    playWarningSound();
+});
+
+// Звуковые эффекты (опционально)
+function playWarningSound() {
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function beep(frequency, duration) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+        
+        // Периодические звуковые сигналы
+        setInterval(() => {
+            if (currentScreen === 'warning' || currentScreen === 'infection') {
+                beep(800, 0.1);
+            }
+        }, 2000);
+    } catch(e) {
+        // Игнорируем ошибки звука
+    }
+}
+
+// Предотвращаем закрытие через Ctrl+W, Alt+F4 и т.д.
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'F12') {
+        e.preventDefault();
+        alert('Отладка отключена!');
+    }
+    if ((e.ctrlKey && e.key === 'w') || (e.altKey && e.key === 'F4')) {
+        e.preventDefault();
+        alert('Закрытие заблокировано!');
+    }
+});
+
+// Полноэкранный режим (только для десктопа)
+function requestFullscreen() {
+    if (!isMobile) {
+        const elem = document.documentElement;
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
+        }
+    }
+}
+
+// Автоматически включаем полноэкранный режим (только на десктопе)
+if (!isMobile) {
+    setTimeout(() => {
+        requestFullscreen();
+    }, 500);
+}
+    </script>
+</body>
+</html>
